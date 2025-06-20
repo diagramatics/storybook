@@ -600,6 +600,13 @@ export class CsfFile {
                     t.isObjectExpression(decl.expression)
                   ) {
                     metaNode = decl.expression;
+                  } else if (
+                    // export default { ... } satisfies Meta<...> as Meta<...>
+                    t.isTSAsExpression(decl) &&
+                    t.isTSSatisfiesExpression(decl.expression)
+                    t.isObjectExpression(decl.expression.expression)
+                  ) {
+                    metaNode = decl.expression;
                   }
 
                   if (metaNode && t.isProgram(parent)) {
